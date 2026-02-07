@@ -16,6 +16,22 @@ This project provides a Shopify integration for managing products and orders thr
 - **Description**: This route takes tracking details and an order ID and updates the fulfillment status in the customer's Shopify account.
 - **Usage**: Updates the order fulfillment details, including tracking numbers, in the Shopify store.
 
+### `/webhooks/orders-create`
+- **Description**: This route handles the creation of orders via Shopify webhooks.
+- **Setup Instructions**:
+  1. **Expose the server**: Use the following command to expose the project via a Cloudflare tunnel:
+     ```bash
+     cloudflared tunnel --url http://localhost:3000
+     ```
+  2. **Update the Shopify app configuration**:
+     - Copy the exposed URL from the Cloudflare tunnel output.
+     - Update the `flora-plugin/shopify.app.toml` file with the exposed URL.
+  3. **Set the webhook URI**: Pass the exposed URL in the `orders-create` webhook URI.
+  4. **Deploy the changes**: Run the following command in the `flora-plugin` folder to deploy the updated configuration:
+     ```bash
+     shopify app deploy
+     ```
+
 ## Flora Plugin Configuration
 
 The Flora plugin can be configured in the `flora-plugin` folder. After making changes in this folder, you can deploy the updated plugin using the following command:
