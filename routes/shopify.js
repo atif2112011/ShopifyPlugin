@@ -11,13 +11,23 @@ router.get('/', (req, res) => {
 // 1. The "Connect" Route - Initiates the handshake
 router.get('/auth', (req, res) => {
     const shop = req.query.shop;
-    if(!shop) {
-        return res.status(400).send("Missing shop parameter");
+    if (!shop) {
+        return res.status(400).json({ error: "Missing 'shop' parameter. Please provide a valid Shopify shop URL." });
     }
-    const redirectUri = `${HOST}/shopify/callback`;
-    const installUrl = `https://${shop}/admin/oauth/authorize?client_id=${SHOPIFY_API_KEY}&scope=${SCOPES}&redirect_uri=${redirectUri}`;
-    console.log("Redirecting to:", installUrl);
-    res.redirect(installUrl);
+
+    if (!shop.endsWith('.myshopify.com')) {
+        return res.status(400).json({ error: "Invalid 'shop' parameter. Ensure it is a valid Shopify shop URL." });
+    }
+
+    try {
+        const redirectUri = `${HOST}/shopify/callback`;
+        const installUrl = `https://${shop}/admin/oauth/authorize?client_id=${SHOPIFY_API_KEY}&scope=${SCOPES}&redirect_uri=${redirectUri}`;
+        console.log("Redirecting to:", installUrl);
+        res.redirect(installUrl);
+    } catch (error) {
+        console.error("Error during Shopify auth redirect:", error);
+        res.status(500).json({ error: "Failed to initiate Shopify authentication." });
+    }
 });
 
 // 2. The Callback Route - Exchanges code for Permanent Access Token

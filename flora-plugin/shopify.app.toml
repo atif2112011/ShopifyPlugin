@@ -13,7 +13,7 @@ api_version = "2026-01"
 
   [[webhooks.subscriptions]]
   topics = [ "orders/create" ]
-  uri = "https://arrivals-usgs-offering-colours.trycloudflare.com/webhooks/orders-create"
+  uri = "https://doubt-lens-tourism-bali.trycloudflare.com/webhooks/orders-create"
   
 
 [access_scopes]
